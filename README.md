@@ -1,117 +1,189 @@
-The content below is an example project proposal / requirements document. Replace the text below the lines marked "__TODO__" with details specific to your project. Remove the "TODO" lines.
-
-(__TODO__: your project name)
-
-# Shoppy Shoperson 
+# LocalWorks
 
 ## Overview
 
-(__TODO__: a brief one or two paragraph, high-level description of your project)
+### Wake up to solutions, not problems.
 
-Remembering what to buy at the grocery store is waaaaay too difficult. Also, shopping for groceries when you're hungry leads to regrettable purchases. Sooo... that's where Shoppy Shoperson comes in!
+You hear that familiar drip -- the leaky sink you’ve been meaning to fix but haven’t found the time to call someone for. With LocalWorks, that’s no longer a problem.
 
-Shoppy Shoperson is a web app that will allow users to keep track of multiple grocery lists. Users can register and login. Once they're logged in, they can create or view their grocery list. For every list that they have, they can add items to the list or cross off items.
+Whether you’re a homeowner or a property manager, LocalWorks connects you with trusted local professionals ready to help -- from plumbers and electricians to handymen and more. Find the right expert for your job in just minutes.
 
+### About HandyLocal
+
+HandyLocal is an intuitive web platform that helps homeowners and property managers discover skilled local tradespeople. Users can browse verified profiles, view credentials and service details, and connect directly with professionals for quotes or inquiries.
+
+Anyone can join -- register as a customer to find help, or as a service provider to offer your expertise. Tradespeople can showcase their skills, credentials, rates, and service areas through personalized public profiles, making it easy for clients to find and trust the right professional for the job.
 
 ## Data Model
 
-(__TODO__: a description of your application's data and their relationships to each other) 
+The application will store Users, Profiles, Reviews, Conversations, and Messages
 
-The application will store Users, Lists and Items
+-   users can have one profile (if they register as a tradesperson)
 
-* users can have multiple lists (via references)
-* each list can have multiple items (by embedding)
+-   profiles can have multiple reviews (from different users)
 
-(__TODO__: sample documents)
+-   users can have multiple conversations (with tradespeople)
+
+-   each conversation can have multiple messages
+
+-   messages belong to one conversation and one sender / receiver
+
+### Sample Documents
 
 An Example User:
 
 ```javascript
 {
-  username: "shannonshopper",
-  hash: // a password hash,
-  lists: // an array of references to List documents
+  _id: // generated ID,
+  name: // user's full name
+  email: "user@example.com", // user email
+  passwordHash: "$2b$10$hashhashhash", // password hashed
+  role: "user", // default is user but can be tradesperson or possibly admin
+  createdAt: // timestamp
+  updatedAt: // timestamp
 }
 ```
 
-An Example List with Embedded Items:
+An Example Profile:
 
 ```javascript
 {
-  user: // a reference to a User object
-  name: "Breakfast foods",
-  items: [
-    { name: "pancakes", quantity: "9876", checked: false},
-    { name: "ramen", quantity: "2", checked: true},
-  ],
+  _id: // unique profile id
+  user: // a reference to a user
+  displayName: // name
+  headline: "Licensed Electrician, 8+ yrs", // short profile message
+  skills: ["electrical", "lighting", "panel upgrade"], // user defined
+  credentials: [
+    {"label": "State Electrical License", "issuer": "NY State", "id": "ELC-987654"}
+  ], // user defined
+  bio: "I help homeowners upgrade panels and improve lighting safely.",
+  rate: {currency: "USD", amount: 85, unit: "hour"}, // optional rates
+  location: {city: "Brooklyn", state: "NY", lat: 40.6782, lng: -73.9442}, // approx location
+  serviceRadiusKm: 25,
+  photos: ["https://…/profile1.jpg"], // profile photos maybe photos of jobs
+  isPublished: true, // flag for having drafts (maybe)
+  avgRating: 4.8, // determined by reviews either number or NULL
+  reviewCount: 12,
+  createdAt: // timestamp
+  updatedAt: // timestamp
+}
+```
+
+An Example Review:
+
+```javascript
+{
+  _id: // unique id
+  reviewer: // reference to user id
+  profile: // reference to tradespersons profile by id
+  rating: 5,
+  comment: "Quick response and great workmanship.",
   createdAt: // timestamp
 }
 ```
 
+An Example Conversation:
 
-## [Link to Commented First Draft Schema](db.mjs) 
+```javascript
+{
+  _id: // unique conversation id
+  participants: [], // user Ids (trades person + user)
+  lastMessageAt: // timestamp
+  createdAt: // timestamp
+}
+```
 
-(__TODO__: create a first draft of your Schemas in db.mjs and link to it)
+An Example Message:
+
+```javascript
+{
+  _id: // unique id
+  conversation: // reference to conversation id
+  sender: // reference to user who sent
+  text: "Hi Bob, are you available this Saturday?",
+  createdAt: // timestamp
+  readAt: null // timestamp (maybe)
+}
+```
+
+## [First Draft Schema](src/db.mjs)
+
+The first draft of the mongoose schemas is linked above. These are subject to change.
 
 ## Wireframes
 
-(__TODO__: wireframes for all of the pages on your site; they can be as simple as photos of drawings or you can use a tool like Balsamiq, Omnigraffle, etc.)
+/ - home page / landing page
 
-/list/create - page for creating a new shopping list
+![Home](documentation/home.png)
 
-![list create](documentation/list-create.png)
+/auth/(login or register)
 
-/list - page for showing all shopping lists
+![Auth](documentation/login.png)
 
-![list](documentation/list.png)
+/profile/:profile-slug (tradesperson)
 
-/list/slug - page for showing specific shopping list
+![Profile](documentation/profile.png)
 
-![list](documentation/list-slug.png)
+/dashboard (logged in user view)
+
+![Dashboard](documentation/dashboard.png)
+
+/messages
+
+![Messages](documentation/messages.png)
 
 ## Site map
 
-(__TODO__: draw out a site map that shows how pages are related to each other)
-
-Here's a [complex example from wikipedia](https://upload.wikimedia.org/wikipedia/commons/2/20/Sitemap_google.jpg), but you can create one without the screenshots, drop shadows, etc. ... just names of pages and where they flow to.
+![SiteMap](documentation/sitemap.png)
 
 ## User Stories or Use Cases
 
-(__TODO__: write out how your application will be used through [user stories](http://en.wikipedia.org/wiki/User_story#Format) and / or [use cases](https://en.wikipedia.org/wiki/Use_case))
-
-1. as non-registered user, I can register a new account with the site
-2. as a user, I can log in to the site
-3. as a user, I can create a new grocery list
-4. as a user, I can view all of the grocery lists I've created in a single list
-5. as a user, I can add items to an existing grocery list
-6. as a user, I can cross off items in an existing grocery list
+-   As a visitor, I can search by skill and location to find relevant tradespeople.
+-   As a visitor, I can view a tradesperson’s public profile to assess fit.
+-   As a user, I can register and log in to access private features.
+-   As a tradesperson, I can create and publish my profile to get discovered.
+-   As a user, I can start a conversation with a tradesperson to discuss a job.
+-   As a user, I can see my conversation history and exchange messages in real time.
+-   As a user, I can leave a review for a completed job to help others.
 
 ## Research Topics
 
-(__TODO__: the research topics that you're planning on working on along with their point values... and the total points of research topics listed)
+These are subject to change based on their complexity and time. I have listed the topics that I am currently most interested in and will adjust according to time and complexity.
 
-* (5 points) Integrate user authentication
-    * I'm going to be using passport for user authentication
-    * And account has been made for testing; I'll email you the password
-    * see <code>cs.nyu.edu/~jversoza/ait-final/register</code> for register page
-    * see <code>cs.nyu.edu/~jversoza/ait-final/login</code> for login page
-* (4 points) Perform client side form validation using a JavaScript library
-    * see <code>cs.nyu.edu/~jversoza/ait-final/my-form</code>
-    * if you put in a number that's greater than 5, an error message will appear in the dom
-* (5 points) vue.js
-    * used vue.js as the frontend framework; it's a challenging library to learn, so I've assigned it 5 points
+-   (4 points) Integrate user authentication
 
-10 points total out of 8 required points (___TODO__: addtional points will __not__ count for extra credit)
+    -   Use passport.js for user authentication
+    -   Mid - Challenging
 
+-   (2 points) Tailwind.css
 
-## [Link to Initial Main Project File](app.mjs) 
+    -   Would like to explore how this might improve the workflow
+    -   Works well with React.js
+    -   Easy - Mid
 
-(__TODO__: create a skeleton Express application with a package.json, app.mjs, views folder, etc. ... and link to your initial app.mjs)
+-   (2 points) Integrate ESLint into your workflow
+
+    -   Use ESLint with Vite (via vite-plugin-eslint) to lint the entire codebase on save
+    -   Easy - Mid
+
+-   (6 points) Use a React framework for front-end
+
+    -   Will allow for custom components and a modern frontend
+    -   Challenging
+
+-   (4 points) Real-time chat with Socket.IO (maybe?)
+
+    -   Use socket.io for a real time chat feature
+    -   Mid – Challenging
+
+## [Link to Initial Main Project File](src/app.mjs)
 
 ## Annotations / References Used
 
-(__TODO__: list any tutorials/references/etc. that you've based your code off of)
+I will probably use these:
 
-1. [passport.js authentication docs](http://passportjs.org/docs) - (add link to source code that was based on this)
-2. [tutorial on vue.js](https://vuejs.org/v2/guide/) - (add link to source code that was based on this)
+-   [passport.js authentication docs](http://passportjs.org/docs)
 
+-   [react docs](https://react.dev/reference/react)
+
+-   [tailwind docs](https://tailwindcss.com/docs/installation/using-vite)

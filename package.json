@@ -1,0 +1,31 @@
+{
+  "name": "final-project-oleks4ndr",
+  "version": "1.0.0",
+  "description": "LocalWorks Web App",
+  "keywords": [
+    "final-project"
+  ],
+  "homepage": "https://github.com/nyu-csci-ua-0467-001-002-fall-2025/final-project-oleks4ndr#readme",
+  "bugs": {
+    "url": "https://github.com/nyu-csci-ua-0467-001-002-fall-2025/final-project-oleks4ndr/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nyu-csci-ua-0467-001-002-fall-2025/final-project-oleks4ndr.git"
+  },
+  "license": "ISC",
+  "author": "oa2302",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "express": "^5.1.0",
+    "express-session": "^1.18.2",
+    "mongoose": "^8.19.2",
+    "passport": "^0.7.0",
+    "passport-local": "^1.0.0"
+  }
+}
