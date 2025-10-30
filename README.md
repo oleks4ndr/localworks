@@ -8,9 +8,9 @@ You hear that familiar drip -- the leaky sink you’ve been meaning to fix but h
 
 Whether you’re a homeowner or a property manager, LocalWorks connects you with trusted local professionals ready to help -- from plumbers and electricians to handymen and more. Find the right expert for your job in just minutes.
 
-### About HandyLocal
+### About LocalWorks
 
-HandyLocal is an intuitive web platform that helps homeowners and property managers discover skilled local tradespeople. Users can browse verified profiles, view credentials and service details, and connect directly with professionals for quotes or inquiries.
+LocalWorks is an intuitive web platform that helps homeowners and property managers discover skilled local tradespeople. Users can browse verified profiles, view credentials and service details, and connect directly with professionals for quotes or inquiries.
 
 Anyone can join -- register as a customer to find help, or as a service provider to offer your expertise. Tradespeople can showcase their skills, credentials, rates, and service areas through personalized public profiles, making it easy for clients to find and trust the right professional for the job.
 
