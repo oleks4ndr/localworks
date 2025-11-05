@@ -6,25 +6,17 @@
 
 ## Special Instructions for Using Form (or Login details if auth is part of your project)
 
-(TODO: if your app requires special instructions to use or if your app requires authentication, add information here; otherwise, leave blank)
+As of now, very simple auth is implemented (which will be worked on for future milestones). There are two working forms, login and register. Navigate to register to make an account and login with the info you provided for registration.
 
 ## URL for form
 
-(TODO: add link to a functioning form; this will likely be `your-repo-name.onrender.com`)
+Link to [registration form](https://localworks.onrender.com/register)
 
 ## URL for form result
 
-(TODO: if applicable, add link to page that shows results of submitting form)
+After registration, a sucess indicator (green success message), will indicate that the user was successfully created and is now in the database. [Link](https://localworks.onrender.com/login)
 
-URL to github that shows line of code where research topic(s) are used / implemented
-
----
-
-(TODO: add link to github url that shows line or lines of code that demonstrate in progress work on at least one research topic)
-
-## References
-
-(TODO: if applicable, links to annotated lines of code in github repository that were based off of tutorials / articles / sample projects)
+## References and Research Topic Progress
 
 -   Using React framework for client side, lots of resources used:
 
