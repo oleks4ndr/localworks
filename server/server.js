@@ -1,4 +1,4 @@
-import 'dotenv/config';
+import './config.mjs';
 import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -12,9 +12,9 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Env variables
-const NODE_ENV = process.env.NODE_ENV || 'development';
-const PORT = process.env.PORT || 3000;
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost/localworks';
+const NODE_ENV = process.env.NODE_ENV ?? 'development';
+const PORT = process.env.PORT ?? 3000;
+const MONGODB_URI = process.env.MONGODB_URI ?? 'mongodb://localhost/localworks';
 
 // CORS configuration
 const corsOptions = {
