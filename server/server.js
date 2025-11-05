@@ -159,12 +159,23 @@ app.get('/messages', async (req, res) => {
   res.json({ message: 'Get messages endpoint - TODO' });
 });
 
-// ===== ERROR HANDLING =====
+// ===== STATIC FILES & CLIENT-SIDE ROUTING =====
 
-// 404 handler
-app.use((req, res) => {
-  res.status(404).json({ error: 'Not found' });
-});
+// Serve static files from the React app (in production)
+if (NODE_ENV === 'production') {
+  const clientBuildPath = path.join(__dirname, '../client/dist');
+  app.use(express.static(clientBuildPath));
+
+  // Handle React Router - serve index.html for all non-API routes
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(clientBuildPath, 'index.html'));
+  });
+} else {
+  // In development, just handle unknown routes with 404
+  app.use((req, res) => {
+    res.status(404).json({ error: 'Not found' });
+  });
+}
 
 // ===== SERVER =====
 
