@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import { testAPI } from '../api';
 import './Landing.css';
@@ -15,7 +16,7 @@ function Landing() {
         console.log('API Connected:', data.message);
       } catch (error) {
         console.error('API Error:', error);
-        setApiStatus('API not connected');
+        setApiStatus('Not connected');
       }
     };
 
@@ -38,18 +39,18 @@ function Landing() {
               and electricians to handymen and more.
             </p>
             <div className="hero-buttons">
-              <a href="/login" className="btn btn-large btn-primary">
+              <Link to="/login" className="btn btn-large btn-primary">
                 Find Professionals
-              </a>
-              <a href="/register" className="btn btn-large btn-secondary">
+              </Link>
+              <Link to="/register" className="btn btn-large btn-secondary">
                 Join as a Pro
-              </a>
+              </Link>
             </div>
             
             {/* Check api status (for development) */}
             {apiStatus && (
               <p className="api-status">
-                API RES: {apiStatus}
+                API: {apiStatus}
               </p>
             )}
           </div>

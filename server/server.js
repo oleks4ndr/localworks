@@ -19,7 +19,7 @@ const MONGODB_URI = process.env.MONGODB_URI ?? 'mongodb://localhost/localworks';
 // CORS configuration
 const corsOptions = {
   origin: NODE_ENV === 'production' 
-    ? process.env.CLIENT_URL || 'https://your-app.onrender.com'
+    ? process.env.CLIENT_URL || 'https://localworks.onrender.com'
     : ['http://localhost:5173', 'http://localhost:3000'],
   credentials: true,
 };

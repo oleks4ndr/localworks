@@ -8,6 +8,15 @@
 
 As of now, very simple auth is implemented (which will be worked on for future milestones). There are two working forms, login and register. Navigate to register to make an account and login with the info you provided for registration.
 
+**IMPORTANT**: Because Render likes to go to sleep on the free teir, please check that the API is first connected. I have added an indicator on the main landing page which should say "API: Welcome to LocalWorks" once the web service starts up.
+
+Once the API is connected, register an account. Then, when you log in, you should see "Welcome back, {name}" where the name would be retrieved from the API and DB.
+
+Login Details which can be used for testing:
+
+email: bobthebuilder@gmail.com
+pass: bobbyspassword
+
 ## URL for form
 
 Link to [registration form](https://localworks.onrender.com/register)
@@ -18,7 +27,7 @@ After registration, a sucess indicator (green success message), will indicate th
 
 ## References and Research Topic Progress
 
--   Using React framework for client side, lots of resources used:
+-   Using React framework for client side, lots of resources used and a good amount of progress:
 
     -   General setup [tutorial](https://www.youtube.com/watch?v=mKmxc8TcWQ8)
     -   [Official Docs](https://react.dev/learn/your-first-component)
