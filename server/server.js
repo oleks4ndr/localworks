@@ -161,23 +161,27 @@ app.get('/messages', async (req, res) => {
 
 // ===== STATIC FILES & CLIENT-SIDE ROUTING =====
 
-// Serve static files from the React app (in production)
 if (NODE_ENV === 'production') {
-  const clientBuildPath = path.join(__dirname, '../client/dist');
+  const clientBuildPath = path.resolve(__dirname, '../client/dist');
   app.use(express.static(clientBuildPath));
 
-  // Handle React Router - serve index.html for all non-API routes
-  // SPA fallback for any non-API route: send index.html
-  // (excludes /api, /auth, etc. so your API keeps working)
-  app.get(/^\/(?!api|auth|messages|profiles).*/, (req, res) => {
-    res.sendFile(path.join(clientBuildPath, 'index.html'));
-  });
-} else {
-  // In development, just handle unknown routes with 404
-  app.use((req, res) => {
-    res.status(404).json({ error: 'Not found' });
+  // If request not to main page, send back index.html for non api get requests
+  app.use((req, res, next) => {
+    // Check if it's a GET request and not an API route (will have to add more to exclude routes later)
+    if (req.method === 'GET' && !req.path.startsWith('/api') && !req.path.startsWith('/auth')) {
+      res.sendFile(path.resolve(clientBuildPath, 'index.html'));
+    } else {
+      next();
+    }
   });
 }
+
+
+// 404 handler
+app.use((req, res) => {
+  res.status(404).json({ error: 'Not found' });
+});
+
 
 // ===== SERVER =====
 
