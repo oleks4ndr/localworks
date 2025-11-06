@@ -159,23 +159,7 @@ app.get('/messages', async (req, res) => {
   res.json({ message: 'Get messages endpoint - TODO' });
 });
 
-// ===== STATIC FILES & CLIENT-SIDE ROUTING =====
-
-if (NODE_ENV === 'production') {
-  const clientBuildPath = path.resolve(__dirname, '../client/dist');
-  app.use(express.static(clientBuildPath));
-
-  // If request not to main page, send back index.html for non api get requests
-  app.use((req, res, next) => {
-    // Check if it's a GET request and not an API route (will have to add more to exclude routes later)
-    if (req.method === 'GET' && !req.path.startsWith('/api') && !req.path.startsWith('/auth')) {
-      res.sendFile(path.resolve(clientBuildPath, 'index.html'));
-    } else {
-      next();
-    }
-  });
-}
-
+// ===== ERROR HANDLE =====
 
 // 404 handler
 app.use((req, res) => {
