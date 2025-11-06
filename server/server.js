@@ -167,7 +167,9 @@ if (NODE_ENV === 'production') {
   app.use(express.static(clientBuildPath));
 
   // Handle React Router - serve index.html for all non-API routes
-  app.get('/*', (req, res) => {
+  // SPA fallback for any non-API route: send index.html
+  // (excludes /api, /auth, etc. so your API keeps working)
+  app.get(/^\/(?!api|auth|messages|profiles).*/, (req, res) => {
     res.sendFile(path.join(clientBuildPath, 'index.html'));
   });
 } else {
