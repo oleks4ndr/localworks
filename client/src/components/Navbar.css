@@ -78,6 +78,13 @@
 .navbar-auth {
 	display: flex;
 	gap: 1rem;
+	align-items: center;
+}
+
+.navbar-user {
+	color: #374151;
+	font-weight: 500;
+	font-size: 0.95rem;
 }
 
 .btn {

@@ -1,0 +1,80 @@
+/* Dashboard Page */
+.dashboard-page {
+	min-height: 100vh;
+	background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.dashboard-container {
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 3rem 2rem;
+}
+
+/* Dashboard Header */
+.dashboard-header {
+	background: white;
+	border-radius: 12px;
+	padding: 2rem;
+	margin-bottom: 2rem;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-header h1 {
+	font-size: 2.5rem;
+	color: #1f2937;
+	margin-bottom: 0.5rem;
+}
+
+.dashboard-header p {
+	font-size: 1.1rem;
+	color: #6b7280;
+}
+
+/* Dashboard Content */
+.dashboard-content {
+	display: grid;
+	gap: 2rem;
+}
+
+.dashboard-placeholder {
+	background: white;
+	border-radius: 12px;
+	padding: 3rem;
+	text-align: center;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-placeholder h2 {
+	font-size: 2rem;
+	color: #667eea;
+	margin-bottom: 1rem;
+}
+
+.dashboard-placeholder p {
+	font-size: 1.1rem;
+	color: #6b7280;
+	margin-bottom: 0.5rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+	.dashboard-container {
+		padding: 2rem 1rem;
+	}
+
+	.dashboard-header h1 {
+		font-size: 2rem;
+	}
+
+	.dashboard-header p {
+		font-size: 1rem;
+	}
+
+	.dashboard-placeholder {
+		padding: 2rem;
+	}
+
+	.dashboard-placeholder h2 {
+		font-size: 1.5rem;
+	}
+}

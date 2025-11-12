@@ -7,7 +7,10 @@ import './index.css';
 import Landing from './pages/Landing';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import Dashboard from './pages/Dashboard';
+import Profile from './pages/Profile';
 import ErrorPage from './pages/ErrorPage';
+import PrivateRoute from './components/PrivateRoute';
 
 const router = createBrowserRouter([
   {
@@ -23,6 +26,16 @@ const router = createBrowserRouter([
   {
     path: '/register',
     element: <Register />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: '/dashboard',
+    element: <PrivateRoute><Dashboard /></PrivateRoute>,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: '/profile',
+    element: <PrivateRoute><Profile /></PrivateRoute>,
     errorElement: <ErrorPage />,
   },
 ]);

@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { getAuth } from 'firebase/auth';
 
 // for dev: use vite proxy
 // in prod: VITE_API_URL from env
@@ -13,31 +14,39 @@ const api = axios.create({
   },
 });
 
+// Add request interceptor to attach Firebase token
+api.interceptors.request.use(
+  async (config) => {
+    const auth = getAuth();
+    const user = auth.currentUser;
+    
+    if (user) {
+      const token = await user.getIdToken();
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
+// Add response interceptor for error handling
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      // Token expired or invalid - could redirect to login
+      console.error('Authentication error:', error.response.data);
+    }
+    return Promise.reject(error);
+  }
+);
+
 export default api;
 
-// ===== AUTH API =====
-
-export async function register(name, email, password, role = 'user') {
-  const response = await api.post('/auth/register', { name, email, password, role });
-  return response.data;
-}
-
-export async function login(email, password) {
-  const response = await api.post('/auth/login', { email, password });
-  return response.data;
-}
-
-export async function logout() {
-  const response = await api.post('/auth/logout');
-  return response.data;
-}
-
-export async function getCurrentUser() {
-  const response = await api.get('/auth/me');
-  return response.data;
-}
-
-// ===== OTHER TO DO FUNCS =====
+// ===== TODO: OTHER FUNCTIONS =====
 
 export async function testAPI() {
   const response = await api.get('/api');
