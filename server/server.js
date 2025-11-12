@@ -1,11 +1,12 @@
 import './config.mjs';
+import './config/firebase-admin.js';
 import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import mongoose from 'mongoose';
 import cors from 'cors';
-import bcrypt from 'bcrypt';
-import { User } from './db.mjs';
+import authRoutes from './routes/auth.js';
+import { verifyFirebaseToken, requireRole } from './middleware/auth.js';
 
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
@@ -29,119 +30,33 @@ mongoose.connect(MONGODB_URI)
   .then(() => console.log('MongoDB connected'))
   .catch((err) => console.error('MongoDB connection ERROR:', err));
 
-// middleware
+// Middleware
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// session configuration
-// TODO
-
-// ===== API ROUTES =====
+// ========= API ROUTES ==========
 
 // Home / Landing
 app.get('/api', (req, res) => {
-  // TODO: Render landing page
   res.json({ message: 'Welcome to LocalWorks' });
 });
 
-// ===== AUTH ROUTES ===== (TO BE MOVED)
-
-// Register
-app.post('/auth/register', async (req, res) => {
-  try {
-    const { name, email, password, role } = req.body;
-
-    // Validate input
-    if (!name || !email || !password) {
-      return res.status(400).json({ error: 'Name, email, and password are required' });
-    }
-
-    // Check if user already exists
-    const existingUser = await User.findOne({ email: email.toLowerCase() });
-    if (existingUser) {
-      return res.status(400).json({ error: 'Email already registered' });
-    }
-
-    // Hash password
-    const saltRounds = 10;
-    const passwordHash = await bcrypt.hash(password, saltRounds);
-
-    // Create new user
-    const user = new User({
-      name,
-      email: email.toLowerCase(),
-      passwordHash,
-      role: role || 'user',
-    });
-
-    await user.save();
-
-    // Return user info (without password)
-    res.status(201).json({
-      message: 'Registration successful',
-      user: {
-        id: user._id,
-        name: user.name,
-        email: user.email,
-        role: user.role,
-      },
-    });
-  } catch (error) {
-    console.error('Registration error:', error);
-    res.status(500).json({ error: 'Registration failed' });
-  }
+// Test protected route
+app.get('/api/protected', verifyFirebaseToken, (req, res) => {
+  res.json({ 
+    message: 'This is a protected route',
+    user: req.user 
+  });
 });
 
-// Login
-app.post('/auth/login', async (req, res) => {
-  try {
-    const { email, password } = req.body;
-
-    // Validate input
-    if (!email || !password) {
-      return res.status(400).json({ error: 'Email and password are required' });
-    }
-
-    // Find user
-    const user = await User.findOne({ email: email.toLowerCase() });
-    if (!user) {
-      return res.status(401).json({ error: 'Invalid email or password' });
-    }
-
-    // Verify password
-    const isValidPassword = await bcrypt.compare(password, user.passwordHash);
-    if (!isValidPassword) {
-      return res.status(401).json({ error: 'Invalid email or password' });
-    }
-
-    // Return user info
-    res.json({
-      message: 'Login successful',
-      user: {
-        id: user._id,
-        name: user.name,
-        email: user.email,
-        role: user.role,
-      },
-    });
-  } catch (error) {
-    console.error('Login error:', error);
-    res.status(500).json({ error: 'Login failed' });
-  }
-});
-
-// Logout
-app.post('/auth/logout', (req, res) => {
-  // To be implemented with proper auth
-  res.json({ message: 'Logout successful' });
-});
-
-// Also TODO move all routes to their own js files and use express router
+// ===== AUTH ROUTES =====
+app.use('/auth', authRoutes);
 
 // ===== PROFILE ROUTES =====
+// TODO: Move these routes into their own profile.js router
 
-// Get single profile by ID or slug
+// Get single profile by ID or slug (public route)
 app.get('/profiles/:id', async (req, res) => {
   // TODO: Get profile by ID
   // - Populate user reference
@@ -149,17 +64,33 @@ app.get('/profiles/:id', async (req, res) => {
   res.json({ message: 'Get profile endpoint - TODO' });
 });
 
-// ===== MESSAGE ROUTES =====
+// Create/update profile (protected route)
+app.post('/profiles', verifyFirebaseToken, async (req, res) => {
+  // TODO: Create or update profile
+  // req.user contains authenticated user info
+  res.json({ message: 'Create/update profile endpoint - TODO', user: req.user });
+});
 
-// Get messages for a conversation
-app.get('/messages', async (req, res) => {
+// ===== MESSAGE ROUTES =====
+// TODO: Move these routes into their own messages.js router
+
+// Get messages for a conversation (protected route)
+app.get('/messages', verifyFirebaseToken, async (req, res) => {
   // TODO: Get messages
   // - Verify user is participant
   // - Populate sender info
-  res.json({ message: 'Get messages endpoint - TODO' });
+  // req.user contains authenticated user info
+  res.json({ message: 'Get messages endpoint - TODO', user: req.user });
 });
 
-// ===== ERROR HANDLE =====
+// Send a message (protected route)
+app.post('/messages', verifyFirebaseToken, async (req, res) => {
+  // TODO: Send message
+  // req.user contains authenticated user info
+  res.json({ message: 'Send message endpoint - TODO', user: req.user });
+});
+
+// ===== ERROR HANDLE (final middleware) =====
 
 // 404 handler
 app.use((req, res) => {
@@ -170,5 +101,5 @@ app.use((req, res) => {
 // ===== SERVER =====
 
 app.listen(PORT, () => {
-  console.log(`LocalWorks server running on port ${PORT}`);
+  console.log(`LocalWorks API running on port http://localhost:${PORT}/`);
 });

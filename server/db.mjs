@@ -2,6 +2,11 @@ import mongoose from 'mongoose';
 
 // user
 const UserSchema = new mongoose.Schema({
+  firebaseUid: {
+    type: String,
+    required: true,
+    unique: true
+  },
   name: {
     type: String,
     required: true,
@@ -13,10 +18,6 @@ const UserSchema = new mongoose.Schema({
     unique: true,
     lowercase: true,
     trim: true
-  },
-  passwordHash: {
-    type: String,
-    required: true
   },
   role: {
     type: String,

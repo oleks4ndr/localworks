@@ -1,4 +1,6 @@
 import { useState } from 'react';
+// import firebase from 'firebase/app';
+// import 'firebase/auth'
 import Navbar from '../components/Navbar';
 import { login } from '../api';
 import './Auth.css';
@@ -11,6 +13,10 @@ function Login() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
+
+  // const loginWithGoogle = () => {
+  //   // 
+  // }
 
   const handleChange = (e) => {
     setFormData({
