@@ -53,7 +53,10 @@
 	text-decoration: none;
 	font-weight: 600;
 	transition: all 0.3s;
-	display: inline-block;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
 }
 
 .btn-primary {

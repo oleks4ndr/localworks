@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
+import { useAuth } from '../contexts/AuthContext';
 import { testAPI } from '../api';
 import './Landing.css';
 
 function Landing() {
   const [apiStatus, setApiStatus] = useState('');
+  const { currentUser } = useAuth();
 
   useEffect(() => {
     // Temporary to check that api is working
@@ -39,12 +41,20 @@ function Landing() {
               and electricians to handymen and more.
             </p>
             <div className="hero-buttons">
-              <Link to="/login" className="btn btn-large btn-primary">
-                Find Professionals
-              </Link>
-              <Link to="/register" className="btn btn-large btn-secondary">
-                Join as a Pro
-              </Link>
+              {currentUser ? (
+                <Link to="/dashboard" className="btn btn-large btn-primary">
+                  Dashboard
+                </Link>
+              ) : (
+                <>
+                  <Link to="/login" className="btn btn-large btn-primary">
+                    Find Professionals
+                  </Link>
+                  <Link to="/register" className="btn btn-large btn-secondary">
+                    Join as a Pro
+                  </Link>
+                </>
+              )}
             </div>
             
             {/* Check api status (for development) */}
