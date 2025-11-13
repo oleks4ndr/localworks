@@ -18,8 +18,8 @@ Once the API is connected, register an account. Then, when you log in, you shoul
 
 Login Details which can be used for testing:
 
-email: bobthebuilder@gmail.com
-pass: bobbyspassword
+email: testing-user@gmail.com
+pass: testinguserpass
 
 ## URL for form 2 (for current milestone)
 
@@ -59,6 +59,6 @@ There was a lot accomplished in this milestone and significant progress on resea
     -   Adding interceptors for Axios to add auth token [here](./client/src/api.js)
     -   _Resources Used_
         -   React docs on [context](https://react.dev/reference/react/createContext)
-        -   Great (tutorial)[https://www.youtube.com/watch?v=6kgitEWTxac] for firebath auth context
+        -   Great [tutorial](https://www.youtube.com/watch?v=6kgitEWTxac) for firebath auth context
         -   [Youtube resource](https://www.youtube.com/watch?v=Jfkme6WE_Dk)
         -   [Another youtube tutorial](https://www.youtube.com/watch?v=9-QAGqt3q-0)
