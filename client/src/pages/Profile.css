@@ -108,6 +108,96 @@
 	transform: none;
 }
 
+/* Profile Form */
+.profile-form {
+	display: flex;
+	flex-direction: column;
+	gap: 1.25rem;
+}
+
+.form-group {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+}
+
+.form-group label {
+	color: #374151;
+	font-weight: 500;
+	font-size: 0.95rem;
+}
+
+.form-group input {
+	padding: 0.75rem 1rem;
+	border: 2px solid #d1d5db;
+	border-radius: 8px;
+	font-size: 1rem;
+	transition: border-color 0.3s;
+}
+
+.form-group input:focus {
+	outline: none;
+	border-color: #667eea;
+}
+
+.form-group input:disabled {
+	background-color: #f3f4f6;
+	cursor: not-allowed;
+	color: #6b7280;
+}
+
+.input-disabled {
+	background-color: #f3f4f6;
+	cursor: not-allowed;
+}
+
+.input-help {
+	font-size: 0.85rem;
+	color: #6b7280;
+	margin: 0;
+}
+
+/* Profile Actions Section */
+.profile-actions {
+	margin-top: 1.5rem;
+	padding-top: 1.5rem;
+	border-top: 2px solid #e5e7eb;
+}
+
+/* Primary Button */
+.btn-primary {
+	background-color: #667eea;
+	color: white;
+	border: none;
+	border-radius: 8px;
+	cursor: pointer;
+	transition: background-color 0.3s, transform 0.2s;
+	padding: 0.75rem 1.5rem;
+	font-size: 1rem;
+	font-weight: 500;
+}
+
+.btn-primary:hover:not(:disabled) {
+	background-color: #5568d3;
+	transform: translateY(-1px);
+}
+
+.btn-primary:disabled {
+	background-color: #9ca3af;
+	cursor: not-allowed;
+	transform: none;
+}
+
+/* Success Message */
+.success-message {
+	background-color: #d1fae5;
+	border: 1px solid #6ee7b7;
+	color: #065f46;
+	padding: 0.75rem 1rem;
+	border-radius: 8px;
+	font-size: 0.9rem;
+}
+
 /* Error Message */
 .error-message {
 	background-color: #fee2e2;

@@ -1,7 +1,14 @@
+# Environment variables (sensitive data)
 .env
-node_modules
+.env.local
+.env.*.local
+
+# Firebase credentials
 serviceAccountKey.json
-firebase-config.js
+
+# Dependencies
+node_modules
+
 # Build outputs
 server/public
 dist

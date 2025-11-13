@@ -136,4 +136,58 @@ router.post('/logout', (req, res) => {
   res.json({ message: 'Logout successful' });
 });
 
+/**
+ * PUT /auth/update-profile
+ * Update user profile information
+ * Expects: { idToken, name }
+ */
+router.put('/update-profile', async (req, res) => {
+  try {
+    const { idToken, name } = req.body;
+
+    if (!idToken || !name) {
+      return res.status(400).json({ error: 'ID token and name are required' });
+    }
+
+    // Verify the Firebase token
+    const decodedToken = await firebaseAuth.verifyIdToken(idToken);
+    const { uid } = decodedToken;
+
+    // Find and update user in MongoDB
+    const user = await User.findOneAndUpdate(
+      { firebaseUid: uid },
+      { name: name.trim() },
+      { new: true, runValidators: true }
+    );
+
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    // Return updated user info
+    res.json({
+      message: 'Profile updated successfully',
+      user: {
+        id: user._id,
+        firebaseUid: user.firebaseUid,
+        name: user.name,
+        email: user.email,
+        role: user.role
+      }
+    });
+  } catch (error) {
+    console.error('Profile update error:', error);
+    
+    if (error.code === 'auth/id-token-expired') {
+      return res.status(401).json({ error: 'Token expired' });
+    }
+    
+    if (error.code === 'auth/argument-error') {
+      return res.status(401).json({ error: 'Invalid token' });
+    }
+    
+    res.status(500).json({ error: 'Profile update failed' });
+  }
+});
+
 export default router;

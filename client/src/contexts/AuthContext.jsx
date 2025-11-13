@@ -163,6 +163,50 @@ export function AuthProvider({ children }) {
     return null;
   }
 
+  // Update user profile (name)
+  async function updateUserProfile(name) {
+    try {
+      setError(null);
+      
+      if (!currentUser) {
+        throw new Error('No user logged in');
+      }
+
+      // Update Firebase profile
+      await updateProfile(currentUser, { displayName: name });
+      
+      // Get Firebase ID token
+      const idToken = await currentUser.getIdToken();
+      
+      // Update backend
+      const response = await fetch(`${import.meta.env.VITE_API_URL || ''}/auth/update-profile`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({ idToken, name })
+      });
+
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.error || 'Profile update failed');
+      }
+
+      const data = await response.json();
+      
+      // Trigger a refresh of the current user
+      await currentUser.reload();
+      setCurrentUser({ ...currentUser });
+      
+      return data;
+    } catch (err) {
+      console.error('Update profile error:', err);
+      setError(err.message);
+      throw err;
+    }
+  }
+
   // Listen for auth state changes
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(firebaseAuth, (user) => {
@@ -181,7 +225,8 @@ export function AuthProvider({ children }) {
     signIn,
     signInWithGoogle,
     logout,
-    getIdToken
+    getIdToken,
+    updateUserProfile
   };
 
   return (
