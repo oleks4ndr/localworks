@@ -46,7 +46,12 @@ api.interceptors.response.use(
 
 export default api;
 
-// ===== TODO: OTHER FUNCTIONS =====
+// ===== API FUNCTIONS =====
+
+export async function getTradeProfiles() {
+  const response = await api.get('/dashboard/profiles');
+  return response.data.profiles;
+}
 
 export async function testAPI() {
   const response = await api.get('/api');

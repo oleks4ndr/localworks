@@ -6,6 +6,7 @@ import { fileURLToPath } from 'url';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import authRoutes from './routes/auth.js';
+import dashboardRoutes from './routes/dashboard.js';
 import { verifyFirebaseToken, requireRole } from './middleware/auth.js';
 
 const app = express();
@@ -53,11 +54,14 @@ app.get('/api/protected', verifyFirebaseToken, (req, res) => {
 // ===== AUTH ROUTES =====
 app.use('/auth', authRoutes);
 
+// ===== DASHBOARD ROUTES =====
+app.use('/dashboard', dashboardRoutes);
+
 // ===== PROFILE ROUTES =====
 // TODO: Move these routes into their own profile.js router
 
 // Get single profile by ID or slug (public route)
-app.get('/profiles/:id', async (req, res) => {
+app.get('/api/profiles/:id', async (req, res) => {
   // TODO: Get profile by ID
   // - Populate user reference
   // - Only return published profiles (unless owner)
@@ -65,7 +69,7 @@ app.get('/profiles/:id', async (req, res) => {
 });
 
 // Create/update profile (protected route)
-app.post('/profiles', verifyFirebaseToken, async (req, res) => {
+app.post('/api/profiles', verifyFirebaseToken, async (req, res) => {
   // TODO: Create or update profile
   // req.user contains authenticated user info
   res.json({ message: 'Create/update profile endpoint - TODO', user: req.user });
@@ -75,7 +79,7 @@ app.post('/profiles', verifyFirebaseToken, async (req, res) => {
 // TODO: Move these routes into their own messages.js router
 
 // Get messages for a conversation (protected route)
-app.get('/messages', verifyFirebaseToken, async (req, res) => {
+app.get('/api/messages', verifyFirebaseToken, async (req, res) => {
   // TODO: Get messages
   // - Verify user is participant
   // - Populate sender info
@@ -84,7 +88,7 @@ app.get('/messages', verifyFirebaseToken, async (req, res) => {
 });
 
 // Send a message (protected route)
-app.post('/messages', verifyFirebaseToken, async (req, res) => {
+app.post('/api/messages', verifyFirebaseToken, async (req, res) => {
   // TODO: Send message
   // req.user contains authenticated user info
   res.json({ message: 'Send message endpoint - TODO', user: req.user });

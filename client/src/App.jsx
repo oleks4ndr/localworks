@@ -9,6 +9,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import Profile from './pages/Profile';
+import Messages from './pages/Messages';
 import ErrorPage from './pages/ErrorPage';
 import PrivateRoute from './components/PrivateRoute';
 
@@ -36,6 +37,11 @@ const router = createBrowserRouter([
   {
     path: '/profile',
     element: <PrivateRoute><Profile /></PrivateRoute>,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: '/messages',
+    element: <PrivateRoute><Messages /></PrivateRoute>,
     errorElement: <ErrorPage />,
   },
 ]);
