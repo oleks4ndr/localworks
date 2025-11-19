@@ -19,6 +19,7 @@ export function useAuth() {
 
 export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState(null);
+  const [userRole, setUserRole] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -163,6 +164,37 @@ export function AuthProvider({ children }) {
     return null;
   }
 
+  // Fetch user data from backend (including role)
+  async function getUserData() {
+    try {
+      const user = firebaseAuth.currentUser;
+      if (!user) {
+        return null;
+      }
+
+      const idToken = await user.getIdToken();
+      const response = await fetch(`${import.meta.env.VITE_API_URL || ''}/auth/me`, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${idToken}`,
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch user data');
+      }
+
+      const data = await response.json();
+      setUserRole(data.user.role);
+      return data.user;
+    } catch (err) {
+      console.error('Get user data error:', err);
+      return null;
+    }
+  }
+
   // Update user profile (name)
   async function updateUserProfile(name) {
     try {
@@ -209,8 +241,14 @@ export function AuthProvider({ children }) {
 
   // Listen for auth state changes
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(firebaseAuth, (user) => {
+    const unsubscribe = onAuthStateChanged(firebaseAuth, async (user) => {
       setCurrentUser(user);
+      if (user) {
+        // Fetch user role from backend
+        await getUserData();
+      } else {
+        setUserRole(null);
+      }
       setLoading(false);
     });
 
@@ -219,6 +257,7 @@ export function AuthProvider({ children }) {
 
   const value = {
     currentUser,
+    userRole,
     loading,
     error,
     signUp,
@@ -226,7 +265,8 @@ export function AuthProvider({ children }) {
     signInWithGoogle,
     logout,
     getIdToken,
-    updateUserProfile
+    updateUserProfile,
+    getUserData
   };
 
   return (

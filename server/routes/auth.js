@@ -129,6 +129,42 @@ router.post('/firebase-login', async (req, res) => {
 });
 
 /**
+ * GET /auth/me
+ * Get current user's data from database
+ */
+router.get('/me', async (req, res) => {
+  try {
+    const authHeader = req.headers.authorization;
+    
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return res.status(401).json({ error: 'No token provided' });
+    }
+
+    const idToken = authHeader.split('Bearer ')[1];
+    const decodedToken = await firebaseAuth.verifyIdToken(idToken);
+    
+    const user = await User.findOne({ firebaseUid: decodedToken.uid });
+    
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    res.json({
+      user: {
+        id: user._id,
+        firebaseUid: user.firebaseUid,
+        name: user.name,
+        email: user.email,
+        role: user.role
+      }
+    });
+  } catch (error) {
+    console.error('Get user data error:', error);
+    res.status(500).json({ error: 'Failed to fetch user data' });
+  }
+});
+
+/**
  * POST /auth/logout
  * Logout endpoint (client-side handles Firebase sign out)
  */

@@ -11,7 +11,7 @@ function Dashboard() {
   const [displayedProfiles, setDisplayedProfiles] = useState([]);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(true);
-  const [visibleCount, setVisibleCount] = useState(8);
+  const [visibleCount, setVisibleCount] = useState(6);
   const profilesPerPage = 3;
 
   // Fetch data for profile cards

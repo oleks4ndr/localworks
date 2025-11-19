@@ -157,6 +157,51 @@
 	margin: 0;
 }
 
+/* Trades Profile Section */
+.trades-profile-section,
+.switch-role-section {
+	margin-top: 1.5rem;
+	padding-top: 1.5rem;
+	border-top: 2px solid #e5e7eb;
+}
+
+.trades-profile-section h2,
+.switch-role-section h2 {
+	font-size: 1.25rem;
+	color: #1f2937;
+	margin-bottom: 0.5rem;
+}
+
+.trades-profile-section p,
+.switch-role-section p {
+	color: #6b7280;
+	font-size: 0.95rem;
+	margin-bottom: 1rem;
+}
+
+.btn-secondary {
+	background-color: #6b7280;
+	color: white;
+	border: none;
+	border-radius: 8px;
+	cursor: pointer;
+	transition: background-color 0.3s, transform 0.2s;
+	padding: 0.75rem 1.5rem;
+	font-size: 1rem;
+	font-weight: 600;
+}
+
+.btn-secondary:hover:not(:disabled) {
+	background-color: #4b5563;
+	transform: translateY(-1px);
+}
+
+.btn-secondary:disabled {
+	background-color: #9ca3af;
+	cursor: not-allowed;
+	transform: none;
+}
+
 /* Profile Actions Section */
 .profile-actions {
 	margin-top: 1.5rem;
@@ -174,7 +219,7 @@
 	transition: background-color 0.3s, transform 0.2s;
 	padding: 0.75rem 1.5rem;
 	font-size: 1rem;
-	font-weight: 500;
+	font-weight: 600;
 }
 
 .btn-primary:hover:not(:disabled) {
@@ -186,6 +231,12 @@
 	background-color: #9ca3af;
 	cursor: not-allowed;
 	transform: none;
+}
+
+/* Full Width Button */
+.btn-full {
+	width: 100%;
+	margin-top: 0.5rem;
 }
 
 /* Success Message */

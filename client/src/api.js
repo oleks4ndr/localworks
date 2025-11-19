@@ -53,6 +53,26 @@ export async function getTradeProfiles() {
   return response.data.profiles;
 }
 
+export async function getMyProfile() {
+  const response = await api.get('/api/profiles/me');
+  return response.data.profile;
+}
+
+export async function createProfile(profileData) {
+  const response = await api.post('/api/profiles', profileData);
+  return response.data;
+}
+
+export async function updateProfile(profileId, profileData) {
+  const response = await api.put(`/api/profiles/${profileId}`, profileData);
+  return response.data;
+}
+
+export async function updateUserRole(userId) {
+  const response = await api.patch(`/api/profiles/${userId}/role`);
+  return response.data;
+}
+
 export async function testAPI() {
   const response = await api.get('/api');
   return response.data;
