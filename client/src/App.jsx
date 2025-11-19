@@ -11,6 +11,7 @@ import Dashboard from './pages/Dashboard';
 import Profile from './pages/Profile';
 import Messages from './pages/Messages';
 import CreateTradesProfile from './pages/CreateTradesProfile';
+import TradesMessages from './pages/TradesMessages';
 import ErrorPage from './pages/ErrorPage';
 import PrivateRoute from './components/PrivateRoute';
 
@@ -48,6 +49,11 @@ const router = createBrowserRouter([
   {
     path: '/create-trades-profile',
     element: <PrivateRoute><CreateTradesProfile /></PrivateRoute>,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: '/trades-messages',
+    element: <PrivateRoute><TradesMessages /></PrivateRoute>,
     errorElement: <ErrorPage />,
   },
 ]);

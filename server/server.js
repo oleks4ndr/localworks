@@ -8,6 +8,7 @@ import cors from 'cors';
 import authRoutes from './routes/auth.js';
 import dashboardRoutes from './routes/dashboard.js';
 import profileRoutes from './routes/profiles.js';
+import contactMessageRoutes from './routes/contactMessages.js';
 import { verifyFirebaseToken, requireRole } from './middleware/auth.js';
 
 const app = express();
@@ -60,6 +61,9 @@ app.use('/dashboard', dashboardRoutes);
 
 // ===== PROFILE ROUTES =====
 app.use('/api/profiles', profileRoutes);
+
+// ===== CONTACT MESSAGE ROUTES =====
+app.use('/api/contact-messages', contactMessageRoutes);
 
 // ===== MESSAGE ROUTES =====
 // TODO: Move these routes into their own messages.js router

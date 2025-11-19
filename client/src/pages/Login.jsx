@@ -1,13 +1,17 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useNavigate, Navigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import { useAuth } from '../contexts/AuthContext';
 import './Auth.css';
 
 function Login() {
   const navigate = useNavigate();
-  const { signIn, signInWithGoogle } = useAuth();
-  
+  const { currentUser, signIn, signInWithGoogle } = useAuth();
+
+  if (currentUser) {
+    return <Navigate to="/profile" replace />;
+  }
+
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -153,7 +157,8 @@ function Login() {
             </button>
           </form>
 
-          <div className="auth-divider">
+          {/* Google Sign In Feature not available */}
+          {/* <div className="auth-divider">
             <span>OR</span>
           </div>
 
@@ -170,7 +175,7 @@ function Login() {
               <path d="M9.003 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.464.891 11.428 0 9.003 0 5.482 0 2.438 2.017.96 4.958L3.967 7.29c.708-2.127 2.692-3.71 5.036-3.71z" fill="#EA4335"/>
             </svg>
             {loading ? 'Signing in...' : 'Continue with Google'}
-          </button>
+          </button> */}
 
           <p className="auth-link">
             Don't have an account? <a href="/register">Sign up</a>

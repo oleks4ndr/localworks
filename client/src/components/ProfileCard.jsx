@@ -1,9 +1,66 @@
 import { useState } from 'react';
-import { Link } from "react-router-dom";
+import { useAuth } from '../contexts/AuthContext';
+import { sendContactMessage } from '../api';
 import './ProfileCard.css';
 
 function ProfileCard({ data }) {
+  const { currentUser } = useAuth();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [showMessageForm, setShowMessageForm] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+  
+  // Form state
+  const [senderName, setSenderName] = useState(currentUser?.displayName || '');
+  const [senderEmail, setSenderEmail] = useState(currentUser?.email || '');
+  const [senderPhone, setSenderPhone] = useState('');
+  const [message, setMessage] = useState('');
+
+  const handleSendMessage = async (e) => {
+    e.preventDefault();
+    setError('');
+    setSuccess('');
+
+    // Validation
+    if (!senderName.trim() || !senderEmail.trim() || !message.trim()) {
+      setError('Please fill in all required fields');
+      return;
+    }
+
+    if (message.length > 500) {
+      setError('Message must be 500 characters or less');
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      await sendContactMessage({
+        toProfileId: data._id,
+        senderName: senderName.trim(),
+        senderEmail: senderEmail.trim(),
+        senderPhone: senderPhone.trim(),
+        message: message.trim()
+      });
+
+      setSuccess('Message sent successfully!');
+      
+      // Reset form
+      setTimeout(() => {
+        setShowMessageForm(false);
+        setMessage('');
+        setSenderPhone('');
+        setSuccess('');
+        setIsModalOpen(false);
+      }, 2000);
+    } catch (err) {
+      console.error('Send message error:', err);
+      setError(err.response?.data?.error || 'Failed to send message. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   // Render star rating
   const renderStars = (rating) => {
@@ -173,9 +230,109 @@ function ProfileCard({ data }) {
             </div>
             
             <div className="modal-footer">
-              <Link to="/messages" className="btn btn-primary">
-                Send Message
-              </Link>
+              {!showMessageForm ? (
+                <button 
+                  className="btn btn-primary"
+                  onClick={() => setShowMessageForm(true)}
+                >
+                  Send Message
+                </button>
+              ) : (
+                <div className="message-form">
+                  <h3>Contact {data.displayName}</h3>
+                  <p className="form-description">Send a message about the work you need done</p>
+                  
+                  <form onSubmit={handleSendMessage}>
+                    <div className="form-group">
+                      <label htmlFor="senderName">Your Name *</label>
+                      <input
+                        type="text"
+                        id="senderName"
+                        value={senderName}
+                        onChange={(e) => setSenderName(e.target.value)}
+                        placeholder="Enter your name"
+                        required
+                        disabled={loading}
+                      />
+                    </div>
+
+                    <div className="form-group">
+                      <label htmlFor="senderEmail">Your Email *</label>
+                      <input
+                        type="email"
+                        id="senderEmail"
+                        value={senderEmail}
+                        onChange={(e) => setSenderEmail(e.target.value)}
+                        placeholder="Enter your email"
+                        required
+                        disabled={loading}
+                      />
+                    </div>
+
+                    <div className="form-group">
+                      <label htmlFor="senderPhone">Phone Number (Optional)</label>
+                      <input
+                        type="tel"
+                        id="senderPhone"
+                        value={senderPhone}
+                        onChange={(e) => setSenderPhone(e.target.value)}
+                        placeholder="Enter your phone number"
+                        disabled={loading}
+                      />
+                    </div>
+
+                    <div className="form-group">
+                      <label htmlFor="message">Message *</label>
+                      <textarea
+                        id="message"
+                        value={message}
+                        onChange={(e) => setMessage(e.target.value)}
+                        placeholder="Describe the work you need done..."
+                        rows="4"
+                        maxLength="500"
+                        required
+                        disabled={loading}
+                      />
+                      <p className="char-count">{message.length}/500 characters</p>
+                    </div>
+
+                    {success && (
+                      <div className="success-message">
+                        {success}
+                      </div>
+                    )}
+
+                    {error && (
+                      <div className="error-message">
+                        {error}
+                      </div>
+                    )}
+
+                    <div className="form-actions">
+                      <button
+                        type="button"
+                        className="btn btn-secondary"
+                        onClick={() => {
+                          setShowMessageForm(false);
+                          setError('');
+                          setMessage('');
+                          setSenderPhone('');
+                        }}
+                        disabled={loading}
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        type="submit"
+                        className="btn btn-primary"
+                        disabled={loading}
+                      >
+                        {loading ? 'Sending...' : 'Send Message'}
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              )}
             </div>
           </div>
         </div>

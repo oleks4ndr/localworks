@@ -73,6 +73,28 @@ export async function updateUserRole(userId) {
   return response.data;
 }
 
+// ===== CONTACT MESSAGE FUNCTIONS =====
+
+export async function sendContactMessage(messageData) {
+  const response = await api.post('/api/contact-messages', messageData);
+  return response.data;
+}
+
+export async function getReceivedMessages() {
+  const response = await api.get('/api/contact-messages/received');
+  return response.data.messages;
+}
+
+export async function markMessageAsRead(messageId) {
+  const response = await api.patch(`/api/contact-messages/${messageId}/read`);
+  return response.data;
+}
+
+export async function deleteContactMessage(messageId) {
+  const response = await api.delete(`/api/contact-messages/${messageId}`);
+  return response.data;
+}
+
 export async function testAPI() {
   const response = await api.get('/api');
   return response.data;

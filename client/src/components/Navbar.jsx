@@ -5,7 +5,7 @@ import './Navbar.css';
 
 function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { currentUser } = useAuth();
+  const { currentUser, userRole } = useAuth();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -37,6 +37,9 @@ function Navbar() {
             <li><Link to="/">About</Link></li>
             {currentUser && (
               <li><Link to="/dashboard">Dashboard</Link></li>
+            )}
+            {currentUser && userRole === 'tradesperson' && (
+              <li><Link to="/trades-messages">My Messages</Link></li>
             )}
           </ul>
           

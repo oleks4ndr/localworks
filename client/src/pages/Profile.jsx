@@ -187,16 +187,16 @@ function Profile() {
             )}
 
             {/* Switch to Tradesperson Section */}
-            {userRole === 'user' && (
+            {(userRole === 'user' || userRole === null) && (
               <div className="switch-role-section">
                 <h2>Are you a tradesperson?</h2>
                 <p>Switch your account to create a professional profile and connect with customers.</p>
                 <button
                   onClick={handleSwitchToTradesperson}
                   className="btn btn-secondary btn-full"
-                  disabled={switchingRole || loading}
+                  disabled={switchingRole || loading || userRole === null}
                 >
-                  {switchingRole ? 'Switching...' : 'Switch to Tradesperson Account'}
+                  {userRole === null ? 'Loading...' : switchingRole ? 'Switching...' : 'Switch to Tradesperson Account'}
                 </button>
               </div>
             )}

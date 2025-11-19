@@ -192,12 +192,54 @@ const MessageSchema = new mongoose.Schema({
   timestamps: true
 });
 
+// contact message (inquiry) Schema
+const ContactMessageSchema = new mongoose.Schema({
+  fromUser: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
+  },
+  toProfile: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Profile',
+    required: true
+  },
+  senderName: {
+    type: String,
+    required: true,
+    trim: true
+  },
+  senderEmail: {
+    type: String,
+    required: true,
+    lowercase: true,
+    trim: true
+  },
+  senderPhone: {
+    type: String,
+    trim: true
+  },
+  message: {
+    type: String,
+    required: true,
+    trim: true,
+    maxlength: 500
+  },
+  isRead: {
+    type: Boolean,
+    default: false
+  }
+}, {
+  timestamps: true
+});
+
 // create models
 const User = mongoose.model('User', UserSchema);
 const Profile = mongoose.model('Profile', ProfileSchema);
 const Review = mongoose.model('Review', ReviewSchema);
 const Conversation = mongoose.model('Conversation', ConversationSchema);
 const Message = mongoose.model('Message', MessageSchema);
+const ContactMessage = mongoose.model('ContactMessage', ContactMessageSchema);
 
 // export models
-export { User, Profile, Review, Conversation, Message };
+export { User, Profile, Review, Conversation, Message, ContactMessage };
