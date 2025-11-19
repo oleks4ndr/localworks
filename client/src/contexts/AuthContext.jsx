@@ -55,6 +55,10 @@ export function AuthProvider({ children }) {
       }
 
       const data = await response.json();
+      
+      // Set the user role
+      setUserRole(data.user.role);
+      
       return data;
     } catch (err) {
       console.error('Sign up error:', err);
@@ -90,6 +94,10 @@ export function AuthProvider({ children }) {
       }
 
       const data = await response.json();
+      
+      // Set the user role 
+      setUserRole(data.user.role);
+      
       return data;
     } catch (err) {
       console.error('Sign in error:', err);
@@ -100,7 +108,7 @@ export function AuthProvider({ children }) {
 
 
 // Sign in with Google
-// TODO: Enable this auth in Firebase console.
+// TODO: Enable this auth in Firebase console. (Not implemented)
   async function signInWithGoogle() {
     try {
       setError(null);
@@ -164,7 +172,7 @@ export function AuthProvider({ children }) {
     return null;
   }
 
-  // Fetch user data from backend (including role)
+  // Fetch user data from backend
   async function getUserData() {
     try {
       const user = firebaseAuth.currentUser;
