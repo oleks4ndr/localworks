@@ -59,7 +59,6 @@ router.post('/', verifyFirebaseToken, async (req, res) => {
 // Get all contact messages received by current tradesperson
 router.get('/received', verifyFirebaseToken, async (req, res) => {
   try {
-    // User is already verified by middleware, use req.user directly
     // Check if user is a tradesperson
     if (req.user.role !== 'tradesperson') {
       return res.status(403).json({ 
@@ -71,7 +70,8 @@ router.get('/received', verifyFirebaseToken, async (req, res) => {
     // Find the user's profile
     const profile = await Profile.findOne({ user: req.user.id });
     if (!profile) {
-      return res.status(404).json({ error: 'Profile not found' });
+      // No profile yet, return empty messages
+      return res.json({ messages: [] });
     }
 
     // Get all messages sent to this profile
@@ -123,12 +123,39 @@ router.patch('/:id/read', verifyFirebaseToken, async (req, res) => {
   }
 });
 
+// Get unread message count for current tradesperson
+router.get('/unread-count', verifyFirebaseToken, async (req, res) => {
+  try {
+    // Check if user is a tradesperson
+    if (req.user.role !== 'tradesperson') {
+      return res.status(403).json({ error: 'Only tradespeople can access unread count' });
+    }
+
+    // Find the user's profile
+    const profile = await Profile.findOne({ user: req.user.id });
+    if (!profile) {
+      // No profile yet, return 0
+      return res.json({ unreadCount: 0 });
+    }
+
+    // Count unread messages
+    const unreadCount = await ContactMessage.countDocuments({ 
+      toProfile: profile._id,
+      isRead: false
+    });
+
+    res.json({ unreadCount });
+  } catch (error) {
+    console.error('Get unread count error:', error);
+    res.status(500).json({ error: 'Failed to fetch unread count' });
+  }
+});
+
 // Delete a contact message
 router.delete('/:id', verifyFirebaseToken, async (req, res) => {
   try {
     const { id } = req.params;
 
-    // Check if user is a tradesperson (user already verified by middleware)
     if (req.user.role !== 'tradesperson') {
       return res.status(403).json({ error: 'Only tradespeople can delete messages' });
     }

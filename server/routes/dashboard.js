@@ -11,9 +11,9 @@ const router = express.Router();
  */
 router.get('/profiles', async (req, res) => {
   try {
-    // Retrieve all published profiles and populate user data
+    // Retrieve all published profiles and populate user data including firebaseUid
     const profiles = await Profile.find({ isPublished: true })
-      .populate('user', 'name email')
+      .populate('user', 'name email firebaseUid')
       .sort({ avgRating: -1, createdAt: -1 })
       .lean(); // improves performance
 

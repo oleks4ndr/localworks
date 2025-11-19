@@ -7,11 +7,6 @@ import './Auth.css';
 function Login() {
   const navigate = useNavigate();
   const { currentUser, signIn, signInWithGoogle } = useAuth();
-
-  if (currentUser) {
-    return <Navigate to="/profile" replace />;
-  }
-
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -19,6 +14,11 @@ function Login() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
+
+  // Redirect if already logged in (but not during login process)
+  if (currentUser && !success) {
+    return <Navigate to="/dashboard" replace />;
+  }
 
   const handleChange = (e) => {
     setFormData({

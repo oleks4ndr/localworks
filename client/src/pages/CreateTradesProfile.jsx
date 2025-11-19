@@ -27,6 +27,7 @@ function CreateTradesProfile() {
   const [skillInput, setSkillInput] = useState('');
   const [credentials, setCredentials] = useState([{ label: '', issuer: '', id: '' }]);
   const [photos, setPhotos] = useState(['']);
+  const [isPublished, setIsPublished] = useState(false);
 
   // Load existing profile if editing
   useEffect(() => {
@@ -47,6 +48,7 @@ function CreateTradesProfile() {
           setSkills(profile.skills || []);
           setCredentials(profile.credentials?.length > 0 ? profile.credentials : [{ label: '', issuer: '', id: '' }]);
           setPhotos(profile.photos?.length > 0 ? profile.photos : ['']);
+          setIsPublished(profile.isPublished || false);
         }
       } catch (err) {
         console.log('No existing profile found');
@@ -99,17 +101,39 @@ function CreateTradesProfile() {
   };
 
   const validateForm = () => {
+    // Always required
     if (!displayName.trim()) {
       setError('Display name is required');
       return false;
     }
 
-    if (rateAmount && parseFloat(rateAmount) <= 0) {
+    // Only validate mandatory fields if publishing
+    if (isPublished) {
+      if (!city.trim()) {
+        setError('City is required for published profiles');
+        return false;
+      }
+
+      if (!state.trim()) {
+        setError('State is required for published profiles');
+        return false;
+      }
+
+      if (!serviceRadiusKm || serviceRadiusKm <= 0) {
+        setError('Service radius is required for published profiles');
+        return false;
+      }
+    }
+
+    // Validate rate amount if provided and not empty
+    const rateValue = parseFloat(rateAmount);
+    if (rateAmount !== '' && !isNaN(rateValue) && rateValue <= 0) {
       setError('Rate amount must be greater than 0');
       return false;
     }
 
-    if (serviceRadiusKm < 0 || serviceRadiusKm > 100) {
+    // Validate service radius range
+    if (serviceRadiusKm && (serviceRadiusKm < 0 || serviceRadiusKm > 100)) {
       setError('Service radius must be between 0 and 100 km');
       return false;
     }
@@ -117,7 +141,8 @@ function CreateTradesProfile() {
     return true;
   };
 
-  const handleSubmit = async (publishStatus) => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     setError('');
     setSuccess('');
 
@@ -137,15 +162,15 @@ function CreateTradesProfile() {
           state: state.trim()
         },
         serviceRadiusKm: parseInt(serviceRadiusKm),
-        rate: {
+        rate: rateAmount && rateAmount !== '' ? {
           currency: 'USD',
-          amount: parseFloat(rateAmount) || 0,
+          amount: parseFloat(rateAmount),
           unit: rateUnit
-        },
+        } : undefined,
         skills: skills,
         credentials: credentials.filter(c => c.label && c.issuer && c.id),
         photos: photos.filter(p => p.trim()),
-        isPublished: publishStatus
+        isPublished: isPublished
       };
 
       let response;
@@ -155,17 +180,10 @@ function CreateTradesProfile() {
         response = await createProfile(profileData);
       }
 
-      if (publishStatus) {
-        setSuccess('Profile published successfully!');
-        setTimeout(() => {
-          navigate('/dashboard');
-        }, 1500);
-      } else {
-        setSuccess('Draft saved successfully!');
-        if (!isEditMode) {
-          setIsEditMode(true);
-          setExistingProfileId(response.profile._id);
-        }
+      setSuccess('Profile saved successfully!');
+      if (!isEditMode) {
+        setIsEditMode(true);
+        setExistingProfileId(response.profile._id);
       }
     } catch (err) {
       console.error('Profile submission error:', err);
@@ -186,7 +204,7 @@ function CreateTradesProfile() {
         </div>
 
         <div className="create-profile-content">
-          <form className="profile-form">
+          <form className="profile-form" onSubmit={handleSubmit}>
             {/* Display Name */}
             <div className="form-section">
               <h2>Basic Information</h2>
@@ -232,7 +250,7 @@ function CreateTradesProfile() {
               
               <div className="form-row">
                 <div className="form-group">
-                  <label htmlFor="city">City</label>
+                  <label htmlFor="city">City {isPublished && '*'}</label>
                   <input
                     type="text"
                     id="city"
@@ -243,7 +261,7 @@ function CreateTradesProfile() {
                 </div>
 
                 <div className="form-group">
-                  <label htmlFor="state">State</label>
+                  <label htmlFor="state">State {isPublished && '*'}</label>
                   <input
                     type="text"
                     id="state"
@@ -255,7 +273,7 @@ function CreateTradesProfile() {
               </div>
 
               <div className="form-group">
-                <label htmlFor="serviceRadius">Service Radius (km)</label>
+                <label htmlFor="serviceRadius">Service Radius (km) {isPublished && '*'}</label>
                 <input
                   type="number"
                   id="serviceRadius"
@@ -264,7 +282,7 @@ function CreateTradesProfile() {
                   min="0"
                   max="100"
                 />
-                <p className="input-help">Maximum: 100 km</p>
+                <p className="input-help">Maximum: 100 km. Required for published profiles.</p>
               </div>
             </div>
 
@@ -435,6 +453,32 @@ function CreateTradesProfile() {
               </button>
             </div>
 
+            {/* Profile Visibility Toggle */}
+            <div className="form-section">
+              <h2>Profile Visibility</h2>
+              <p className="section-help">Control whether your profile appears on the public dashboard</p>
+              
+              <div className="toggle-group">
+                <label className="toggle-label">
+                  <span className="toggle-text">Profile Public</span>
+                  <div className="toggle-switch">
+                    <input
+                      type="checkbox"
+                      checked={isPublished}
+                      onChange={(e) => setIsPublished(e.target.checked)}
+                      disabled={loading}
+                    />
+                    <span className="toggle-slider"></span>
+                  </div>
+                </label>
+                <p className="toggle-help">
+                  {isPublished 
+                    ? 'Your profile is visible to customers on the dashboard' 
+                    : 'Your profile is hidden and only visible to you'}
+                </p>
+              </div>
+            </div>
+
             {/* Messages */}
             {success && (
               <div className="success-message">
@@ -451,21 +495,11 @@ function CreateTradesProfile() {
             {/* Actions */}
             <div className="form-actions">
               <button
-                type="button"
-                onClick={() => handleSubmit(false)}
-                className="btn btn-secondary btn-large"
-                disabled={loading}
-              >
-                {loading ? 'Saving...' : 'Save Draft'}
-              </button>
-
-              <button
-                type="button"
-                onClick={() => handleSubmit(true)}
+                type="submit"
                 className="btn btn-primary btn-large"
                 disabled={loading}
               >
-                {loading ? 'Publishing...' : 'Publish Profile'}
+                {loading ? 'Saving...' : 'Save Profile'}
               </button>
             </div>
           </form>

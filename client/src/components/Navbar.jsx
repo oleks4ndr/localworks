@@ -1,15 +1,48 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
 import { useAuth } from '../contexts/AuthContext';
+import { getUnreadMessageCount } from '../api';
 import './Navbar.css';
 
 function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(0);
   const { currentUser, userRole } = useAuth();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
+
+  // Fetch unread message count for tradespeople
+  useEffect(() => {
+    let intervalId;
+
+    const fetchUnreadCount = async () => {
+      if (currentUser && userRole === 'tradesperson') {
+        try {
+          const count = await getUnreadMessageCount();
+          setUnreadCount(count);
+        } catch (error) {
+          console.error('Failed to fetch unread count:', error);
+        }
+      }
+    };
+
+    // Initial fetch
+    fetchUnreadCount();
+
+    // Poll every 60 seconds
+    if (currentUser && userRole === 'tradesperson') {
+      intervalId = setInterval(fetchUnreadCount, 60000);
+    }
+
+    // Cleanup
+    return () => {
+      if (intervalId) {
+        clearInterval(intervalId);
+      }
+    };
+  }, [currentUser, userRole]);
 
   return (
     <nav className="navbar">
@@ -39,7 +72,14 @@ function Navbar() {
               <li><Link to="/dashboard">Dashboard</Link></li>
             )}
             {currentUser && userRole === 'tradesperson' && (
-              <li><Link to="/trades-messages">My Messages</Link></li>
+              <li className="nav-messages-item">
+                <Link to="/trades-messages">
+                  My Messages
+                  {unreadCount > 0 && (
+                    <span className="unread-badge">{unreadCount}</span>
+                  )}
+                </Link>
+              </li>
             )}
           </ul>
           

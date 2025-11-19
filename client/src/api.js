@@ -95,6 +95,11 @@ export async function deleteContactMessage(messageId) {
   return response.data;
 }
 
+export async function getUnreadMessageCount() {
+  const response = await api.get('/api/contact-messages/unread-count');
+  return response.data.unreadCount;
+}
+
 export async function testAPI() {
   const response = await api.get('/api');
   return response.data;

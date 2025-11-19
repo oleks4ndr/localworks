@@ -7,11 +7,6 @@ import './Auth.css';
 function Register() {
   const navigate = useNavigate();
   const { currentUser, signUp, signInWithGoogle } = useAuth();
-
-  if (currentUser) {
-    return <Navigate to="/profile" replace />;
-  }
-  
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -22,6 +17,11 @@ function Register() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
+
+  // Redirect if already logged in (but not during registration process)
+  if (currentUser && !success) {
+    return <Navigate to="/dashboard" replace />;
+  }
 
   const handleChange = (e) => {
     setFormData({

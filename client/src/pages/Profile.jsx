@@ -38,11 +38,13 @@ function Profile() {
 
     try {
       await updateUserRole(currentUser.uid);
-      await getUserData(); // Refresh user data to update role
-      setSuccess('Account switched to tradesperson! You can now create your trades profile.');
-      setTimeout(() => {
-        setSuccess('');
-      }, 3000);
+      const userData = await getUserData(); // Refresh user data to update role
+      if (userData) {
+        setSuccess('Account switched to tradesperson! You can now create your trades profile.');
+        setTimeout(() => {
+          setSuccess('');
+        }, 3000);
+      }
     } catch (err) {
       console.error('Switch role error:', err);
       setError(err.response?.data?.error || 'Failed to switch account type. Please try again.');
@@ -187,16 +189,16 @@ function Profile() {
             )}
 
             {/* Switch to Tradesperson Section */}
-            {(userRole === 'user' || userRole === null) && (
+            {userRole === 'user' && (
               <div className="switch-role-section">
                 <h2>Are you a tradesperson?</h2>
                 <p>Switch your account to create a professional profile and connect with customers.</p>
                 <button
                   onClick={handleSwitchToTradesperson}
                   className="btn btn-secondary btn-full"
-                  disabled={switchingRole || loading || userRole === null}
+                  disabled={switchingRole || loading}
                 >
-                  {userRole === null ? 'Loading...' : switchingRole ? 'Switching...' : 'Switch to Tradesperson Account'}
+                  {switchingRole ? 'Switching...' : 'Switch to Tradesperson Account'}
                 </button>
               </div>
             )}

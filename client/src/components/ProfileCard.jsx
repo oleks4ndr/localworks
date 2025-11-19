@@ -1,10 +1,13 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { sendContactMessage } from '../api';
 import './ProfileCard.css';
 
 function ProfileCard({ data }) {
+  const navigate = useNavigate();
   const { currentUser } = useAuth();
+  const isOwnProfile = data.user?.firebaseUid === currentUser?.uid;
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showMessageForm, setShowMessageForm] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -230,7 +233,14 @@ function ProfileCard({ data }) {
             </div>
             
             <div className="modal-footer">
-              {!showMessageForm ? (
+              {isOwnProfile ? (
+                <button 
+                  className="btn btn-primary"
+                  onClick={() => navigate('/create-trades-profile')}
+                >
+                  Edit My Profile
+                </button>
+              ) : !showMessageForm ? (
                 <button 
                   className="btn btn-primary"
                   onClick={() => setShowMessageForm(true)}
