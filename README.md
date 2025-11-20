@@ -217,14 +217,6 @@ All Mongoose schemas are defined in `server/db.mjs`. Currently implemented model
 -   As a user, I can upgrade my account to tradesperson status
 -   As a user, I can edit my profile when viewing my own tradesperson profile
 
-### Planned (Not Yet Implemented)
-
--   ⏳ As a visitor, I can search and filter tradespeople by skill and location
--   ⏳ As a user, I can start real-time conversations with tradespeople
--   ⏳ As a user, I can see my conversation history and exchange messages
--   ⏳ As a user, I can leave reviews and ratings for tradespeople
--   ⏳ As a visitor, I can view aggregated ratings on profiles
-
 ## Research Topics & Technical Implementation
 
 ### Completed (14 points total)

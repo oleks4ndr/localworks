@@ -112,6 +112,17 @@ Review, Conversation, and Message are not implemented.
 -   [App.jsx with React Router setup - Lines 1-66](https://github.com/nyu-csci-ua-0467-001-002-fall-2025/final-project-oleks4ndr/blob/main/client/src/App.jsx#L1-L66)
 -   [AuthContext with React Context API - Lines 1-278](https://github.com/nyu-csci-ua-0467-001-002-fall-2025/final-project-oleks4ndr/blob/main/client/src/contexts/AuthContext.jsx#L1-L278)
 -   [Reusable ProfileCard component - Lines 1-316](https://github.com/nyu-csci-ua-0467-001-002-fall-2025/final-project-oleks4ndr/blob/main/client/src/components/ProfileCard.jsx#L1-L316)
+-   [Dashboard with useState/useEffect hooks - Lines 1-96](https://github.com/nyu-csci-ua-0467-001-002-fall-2025/final-project-oleks4ndr/blob/main/client/src/pages/Dashboard.jsx#L1-L96)
+
+**React Router Dom:**
+
+-   [createBrowserRouter configuration - Lines 1-66](https://github.com/nyu-csci-ua-0467-001-002-fall-2025/final-project-oleks4ndr/blob/main/client/src/App.jsx#L1-L66)
+-   [PrivateRoute wrapper component - Lines 1-20](https://github.com/nyu-csci-ua-0467-001-002-fall-2025/final-project-oleks4ndr/blob/main/client/src/components/PrivateRoute.jsx#L1-L20)
+-   [Navigate component for redirects - Lines 1-50](https://github.com/nyu-csci-ua-0467-001-002-fall-2025/final-project-oleks4ndr/blob/main/client/src/pages/Register.jsx#L20-L25)
+
+**Vite Build Tool:**
+
+-   [Vite config with proxy setup - Lines 1-13](https://github.com/nyu-csci-ua-0467-001-002-fall-2025/final-project-oleks4ndr/blob/main/client/vite.config.js#L1-L13)
 
 **Firebase Authentication:**
 
@@ -119,6 +130,11 @@ Review, Conversation, and Message are not implemented.
 -   [Firebase Admin SDK setup - Lines 1-14](https://github.com/nyu-csci-ua-0467-001-002-fall-2025/final-project-oleks4ndr/blob/main/server/config/firebase-admin.js#L1-L14)
 -   [Auth middleware with token verification - Lines 1-44](https://github.com/nyu-csci-ua-0467-001-002-fall-2025/final-project-oleks4ndr/blob/main/server/middleware/auth.js#L1-L44)
 -   [Auth routes (register/login) - Lines 1-217](https://github.com/nyu-csci-ua-0467-001-002-fall-2025/final-project-oleks4ndr/blob/main/server/routes/auth.js#L1-L217)
+
+**Axios and CORS:**
+
+-   [Axios client with interceptors - Lines 1-103](https://github.com/nyu-csci-ua-0467-001-002-fall-2025/final-project-oleks4ndr/blob/main/client/src/api.js#L1-L103)
+-   [CORS configuration in server - Lines 27-33](https://github.com/nyu-csci-ua-0467-001-002-fall-2025/final-project-oleks4ndr/blob/main/server/server.js#L27-L33)
 
 ## Optional project notes
 
