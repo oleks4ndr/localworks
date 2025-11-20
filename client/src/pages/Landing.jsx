@@ -7,7 +7,7 @@ import './Landing.css';
 
 function Landing() {
   const [apiStatus, setApiStatus] = useState('');
-  const { currentUser } = useAuth();
+  const { currentUser, userRole } = useAuth();
 
   useEffect(() => {
     // Temporary to check that api is working
@@ -42,9 +42,16 @@ function Landing() {
             </p>
             <div className="hero-buttons">
               {currentUser ? (
-                <Link to="/dashboard" className="btn btn-large btn-primary">
-                  Dashboard
-                </Link>
+                <>
+                  <Link to="/dashboard" className="btn btn-large btn-primary">
+                    Dashboard
+                  </Link>
+                  {userRole === 'tradesperson' && (
+                    <Link to="/create-trades-profile" className="btn btn-large btn-secondary">
+                      My Profile
+                    </Link>
+                  )}
+                </>
               ) : (
                 <>
                   <Link to="/login" className="btn btn-large btn-primary">
