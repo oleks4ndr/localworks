@@ -51,7 +51,7 @@ function Landing() {
                     Find Professionals
                   </Link>
                   <Link to="/register" className="btn btn-large btn-secondary">
-                    Join as a Pro
+                    Register as a Pro
                   </Link>
                 </>
               )}
@@ -85,6 +85,29 @@ function Landing() {
                 <div className="feature-icon">✅</div>
                 <h3>Get It Done</h3>
                 <p>Hire trusted experts for your job</p>
+              </div>
+            </div>
+          </div>
+        </section>
+        {/* About section */}
+        <section className="about" id="about">
+          <div className="about-container">
+            <h2>About LocalWorks</h2>
+            <div className="about-grid">
+              <div className="about-card">
+                <div className="about-icon">⁉️</div>
+                <h3>What?</h3>
+                <p>a web app to solve ur problems</p>
+              </div>
+              <div className="about-card">
+                <div className="about-icon">🤔</div>
+                <h3>Why?</h3>
+                <p>because its hard to find real good people</p>
+              </div>
+              <div className="about-card">
+                <div className="about-icon">📍</div>
+                <h3>Where?</h3>
+                <p>based in nyc.....</p>
               </div>
             </div>
           </div>

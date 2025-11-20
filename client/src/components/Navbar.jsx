@@ -66,8 +66,25 @@ function Navbar() {
         {/* Nav links */}
         <div className={`navbar-menu ${isMenuOpen ? 'active' : ''}`}>
           <ul className="navbar-links">
-            <li><Link to="/">Home</Link></li>
-            <li><Link to="/">About</Link></li>
+            <li><Link to="/"
+            // Scroll to hero
+            onClick={() => {
+              window.scrollTo({
+                top: 0,
+                left: 0,
+                behavior: 'smooth'
+              });
+            }}
+            >Home</Link></li>
+            <li><Link to="/"
+            // Scroll to about section
+            onClick={() => {
+              const section = document.getElementById("about");
+              if (section) {
+                setTimeout(() => section.scrollIntoView({ behavior: "smooth" }), 50);
+              }
+            }}
+            >About</Link></li>
             {currentUser && (
               <li><Link to="/dashboard">Dashboard</Link></li>
             )}

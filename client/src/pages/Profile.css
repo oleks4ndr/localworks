@@ -179,7 +179,7 @@
 	margin-bottom: 1rem;
 }
 
-.btn-secondary {
+.profile-page .btn-secondary {
 	background-color: #6b7280;
 	color: white;
 	border: none;
@@ -191,12 +191,12 @@
 	font-weight: 600;
 }
 
-.btn-secondary:hover:not(:disabled) {
+.profile-page .btn-secondary:hover:not(:disabled) {
 	background-color: #4b5563;
 	transform: translateY(-1px);
 }
 
-.btn-secondary:disabled {
+.profile-page .btn-secondary:disabled {
 	background-color: #9ca3af;
 	cursor: not-allowed;
 	transform: none;
@@ -219,7 +219,7 @@
 	transition: background-color 0.3s, transform 0.2s;
 	padding: 0.75rem 1.5rem;
 	font-size: 1rem;
-	font-weight: 600;
+	font-weight: 500;
 }
 
 .btn-primary:hover:not(:disabled) {
