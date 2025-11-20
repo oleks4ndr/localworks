@@ -202,20 +202,20 @@ All Mongoose schemas are defined in `server/db.mjs`. Currently implemented model
 
 ### Implemented
 
--   ✅ As a visitor, I can view the landing page and navigate to registration/login
--   ✅ As a user, I can register with email/password as either a customer or tradesperson
--   ✅ As a user, I can log in and access protected features
--   ✅ As a tradesperson, I can create and edit my profile with business details, skills, and credentials
--   ✅ As a tradesperson, I can toggle my profile between draft and public visibility
--   ✅ As a user, I can browse all published tradesperson profiles on the dashboard
--   ✅ As a user, I can view tradesperson profile details in a modal
--   ✅ As a user, I can send contact messages to tradespeople
--   ✅ As a tradesperson, I can view all messages received from potential clients
--   ✅ As a tradesperson, I can filter messages by all/unread status
--   ✅ As a tradesperson, I can mark messages as read and delete messages
--   ✅ As a tradesperson, I can see an unread message badge in the navigation
--   ✅ As a user, I can upgrade my account to tradesperson status
--   ✅ As a user, I can edit my profile when viewing my own tradesperson profile
+-   As a visitor, I can view the landing page and navigate to registration/login
+-   As a user, I can register with email/password as either a customer or tradesperson
+-   As a user, I can log in and access protected features
+-   As a tradesperson, I can create and edit my profile with business details, skills, and credentials
+-   As a tradesperson, I can toggle my profile between draft and public visibility
+-   As a user, I can browse all published tradesperson profiles on the dashboard
+-   As a user, I can view tradesperson profile details in a modal
+-   As a user, I can send contact messages to tradespeople
+-   As a tradesperson, I can view all messages received from potential clients
+-   As a tradesperson, I can filter messages by all/unread status
+-   As a tradesperson, I can mark messages as read and delete messages
+-   As a tradesperson, I can see an unread message badge in the navigation
+-   As a user, I can upgrade my account to tradesperson status
+-   As a user, I can edit my profile when viewing my own tradesperson profile
 
 ### Planned (Not Yet Implemented)
 
@@ -227,28 +227,44 @@ All Mongoose schemas are defined in `server/db.mjs`. Currently implemented model
 
 ## Research Topics & Technical Implementation
 
-### Completed (11 points total)
+### Completed (14 points total)
 
 -   **(6 points) React Frontend**
 
-    -   Built entire client-side application using React
-    -   Implemented with Vite as the build tool
-    -   Used React Router for client-side routing
-    -   Created reusable components (Navbar, ProfileCard, PrivateRoute)
-    -   Implemented React Context API for authentication state management
+    -   Built entire client application with React
+    -   Implemented Context API for global authentication state management
+    -   Created reusable component architecture (Navbar, ProfileCard, PrivateRoute)
+    -   Used React hooks (useState, useEffect, useContext) for state and side effects
+    -   Built controlled form components with real-time validation
+
+-   **(2 points) React Router Dom**
+
+    -   Integrated React Router for client-side routing
+    -   Implemented createBrowserRouter for route configuration
+    -   Used Navigate component for programmatic redirects
+    -   Created route guards with PrivateRoute wrapper component
+    -   Handled authentication-based navigation logic
+
+-   **(1 point) Vite Build Tool**
+
+    -   Configured Vite as build tool and development server
+    -   Configured proxy for API requests during development
 
 -   **(4 points) Firebase Authentication**
 
-    -   Integrated Firebase Authentication for user management
-    -   Implemented email/password registration and login
-    -   Used Firebase Admin SDK on backend for token verification
-    -   Created custom authentication middleware for protected routes
-    -   Quite complex as it required coordinating Firebase client/server SDKs, setting up many env vars, and configuration in the cloud.
+    -   Integrated Firebase Auth SDK on client for email/password auth
+    -   Implemented Firebase Admin SDK on backend for secure token verification
+    -   Created custom Express middleware to validate tokens and attach user data
+    -   Coordinated authentication state between client and server
+    -   Handled token refresh and session management
+    -   Complex setup requiring Firebase console configuration, environment variables, and SDK coordination
 
--   **(1 points) Axios for request to API**
-
-    -   Used Axios library instead of fetch for making background requests to the API from the front-end
-    -   Configured
+-   **(1 point) Axios and CORS**
+    -   Implemented Axios HTTP client with request/response interceptors
+    -   Automatic Firebase token attachment to all API requests
+    -   Configured CORS on Express server for cross-origin requests
+    -   Set up credential handling for cookie-based sessions
+    -   Created centralized API client with error handling
 
 ### Planned But Not Implemented
 

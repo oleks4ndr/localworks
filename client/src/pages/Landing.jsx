@@ -96,18 +96,18 @@ function Landing() {
             <div className="about-grid">
               <div className="about-card">
                 <div className="about-icon">⁉️</div>
-                <h3>What?</h3>
-                <p>a web app to solve ur problems</p>
+                <h3>What We Do</h3>
+                <p>LocalWorks is a professional platform connecting homeowners and property managers with verified local tradespeople and service professionals.</p>
               </div>
               <div className="about-card">
                 <div className="about-icon">🤔</div>
-                <h3>Why?</h3>
-                <p>because its hard to find real good people</p>
+                <h3>Why Choose Us</h3>
+                <p>We simplify the process of finding qualified professionals by providing detailed profiles, credentials, and direct communication channels.</p>
               </div>
               <div className="about-card">
                 <div className="about-icon">📍</div>
-                <h3>Where?</h3>
-                <p>based in nyc.....</p>
+                <h3>Our Location</h3>
+                <p>Based in New York City, serving local communities with trusted professional connections.</p>
               </div>
             </div>
           </div>
