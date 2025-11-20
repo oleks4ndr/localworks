@@ -7,7 +7,7 @@ import './CreateTradesProfile.css';
 
 function CreateTradesProfile() {
   const navigate = useNavigate();
-  const { currentUser } = useAuth();
+  const { currentUser, userRole } = useAuth();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
@@ -28,6 +28,13 @@ function CreateTradesProfile() {
   const [credentials, setCredentials] = useState([{ label: '', issuer: '', id: '' }]);
   const [photos, setPhotos] = useState(['']);
   const [isPublished, setIsPublished] = useState(false);
+
+  // Check if user is a tradesperson, redirect if not
+  useEffect(() => {
+    if (userRole && userRole !== 'tradesperson') {
+      navigate('/profile');
+    }
+  }, [userRole, navigate]);
 
   // Load existing profile if editing
   useEffect(() => {
@@ -101,7 +108,6 @@ function CreateTradesProfile() {
   };
 
   const validateForm = () => {
-    // Always required
     if (!displayName.trim()) {
       setError('Display name is required');
       return false;
