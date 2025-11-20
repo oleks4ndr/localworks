@@ -36,21 +36,30 @@ _Tradesperson Profile info_
 -   Email: plumbermike@email.com
 -   Password: password123
 
-## URL for form 2 (for current milestone)
+## URL for form 2
 
-(TODO: if applicable, add link to page that shows results of submitting form)
+Link to profile name change form:
+[https://localworks.onrender.com/profile](https://localworks.onrender.com/profile)
 
 ## Special Instructions for Form 2
 
-(TODO: if your app requires special instructions to use or if your app requires authentication, add information here; otherwise, leave blank)
+To access the second form, you must first be authenticated (logged in). The second form is quite simple and allows the user to change their display name.
 
-## URL for form 3 (from previous milestone)
+## URL for form 3 (current milestone)
 
-(TODO: add link to a functioning form)
+Two forms created for full implementation:
+
+Firstly the [create trades profile form](https://localworks.onrender.com/create-trades-profile)
+
+[https://localworks.onrender.com/create-trades-profile](https://localworks.onrender.com/create-trades-profile)
+
+Secondly, the Send Message form is accessible through the profile card modals on the [dashboard](https://localworks.onrender.com/dashboard). (Click details on a public card and scroll down to "Send Message" button which will reveal a message form).
 
 ## Special Instructions for Form 3
 
-(TODO: if your app requires special instructions to use or if your app requires authentication, add information here; otherwise, leave blank)
+To access the third form, the user once again has to be authentication, and has to have the role of a tradesperson. This can either be achieved by creating a new account with the Account Type set to Tradesperson, or if the account was created as a Customer role, there is an option to switch the account role to a tradesperson from the [profile page](https://localworks.onrender.com/profile).
+
+The Create Trades Profile form allows for a tradesperson to fill out information about themselves or their business and make that info public in the shape of a profile card on the dashboard.
 
 ## First link to github line number(s) for constructor, HOF, etc.
 

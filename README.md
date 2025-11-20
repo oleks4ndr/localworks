@@ -2,6 +2,31 @@
 
 ## Overview
 
+LocalWorks is a web application that connects homeowners and property managers with local tradespeople and service professionals. The platform allows users to browse tradesperson profiles, view their credentials and services, and contact them directly.
+
+## Current Implementation Status
+
+### Completed Features
+
+-   **User Authentication**: Firebase-based authentication with email/password
+-   **Dual Account Types**: Register as customer or tradesperson
+-   **Profile Management**: Tradespeople can create/edit profiles with business details, skills, credentials, rates, and photos
+-   **Dashboard**: Browse published tradesperson profiles
+-   **Contact System**: Send inquiry messages to tradespeople
+-   **Message Inbox**: Tradespeople can manage received messages (filter, read, delete)
+-   **Unread Notifications**: Badge showing unread message count
+-   **Role Switching**: Users can upgrade to tradesperson accounts
+-   **Profile Visibility Toggle**: Draft/public profile status
+
+### Not Yet Implemented
+
+-   Search and filtering by skill/location
+-   Real-time messaging/chat
+-   Review and rating system
+-   Geolocation features
+
+## Original Overview
+
 ### Wake up to solutions, not problems.
 
 You hear that familiar drip -- the leaky sink you’ve been meaning to fix but haven’t found the time to call someone for. With LocalWorks, that’s no longer a problem.
@@ -16,17 +41,26 @@ Anyone can join -- register as a customer to find help, or as a service provider
 
 ## Data Model
 
-The application will store Users, Profiles, Reviews, Conversations, and Messages
+The application stores Users, Profiles, ContactMessages, Reviews (not implemented), Conversations (not implemented), and Messages (not implemented) in MongoDB.
 
--   users can have one profile (if they register as a tradesperson)
+### Implemented Collections
 
--   profiles can have multiple reviews (from different users)
+-   **Users**: Store user accounts with Firebase UID, email, name, and role (user/tradesperson/admin)
+-   **Profiles**: Tradesperson profiles with business details, skills, credentials, location, rates, and photos
+-   **ContactMessages**: Inquiry messages from users to tradespeople (implemented as simple contact form system)
 
--   users can have multiple conversations (with tradespeople)
+### Planned Collections (OUTSIDE OF CLASS) (Schema defined, not yet implemented)
 
--   each conversation can have multiple messages
+-   **Reviews**: User reviews and ratings for tradespeople
+-   **Conversations**: Chat conversations between users and tradespeople
+-   **Messages**: Individual messages within conversations
 
--   messages belong to one conversation and one sender / receiver
+### Relationships
+
+-   Users can have one Profile (if they are tradespeople)
+-   User with role tradesperson can receive multiple ContactMessages
+-   Profiles can have multiple Reviews (not yet implemented)
+-   Users can have multiple Conversations (not yet implemented)
 
 ### Sample Documents
 
@@ -34,15 +68,17 @@ An Example User:
 
 ```javascript
 {
-  _id: // generated ID,
-  name: // user's full name
-  email: "user@example.com", // user email
-  passwordHash: "$2b$10$hashhashhash", // password hashed
-  role: "user", // default is user but can be tradesperson or possibly admin
+  _id: // generated ID
+  firebaseUid: "xyz123abc", // Firebase authentication UID
+  name: "John Smith",
+  email: "john@example.com",
+  role: "tradesperson", // user, tradesperson, or admin
   createdAt: // timestamp
   updatedAt: // timestamp
 }
 ```
+
+Note: Passwords are managed by Firebase Authentication, not stored in MongoDB.
 
 An Example Profile:
 
@@ -69,13 +105,32 @@ An Example Profile:
 }
 ```
 
+An Example ContactMessage:
+
+```javascript
+{
+  _id: // unique id
+  fromUser: // reference to user who sent
+  toProfile: // reference to tradesperson's profile
+  senderName: "Jane Doe",
+  senderEmail: "jane@example.com",
+  senderPhone: "555-1234", // optional
+  message: "I need help with a leaking pipe. Are you available this week?",
+  isRead: false,
+  createdAt: // timestamp
+  updatedAt: // timestamp
+}
+```
+
+### Planned Schemas (NOT IMPLEMENTED FOR THIS PROJECT)
+
 An Example Review:
 
 ```javascript
 {
   _id: // unique id
   reviewer: // reference to user id
-  profile: // reference to tradespersons profile by id
+  profile: // reference to tradesperson's profile by id
   rating: 5,
   comment: "Quick response and great workmanship.",
   createdAt: // timestamp
@@ -87,7 +142,7 @@ An Example Conversation:
 ```javascript
 {
   _id: // unique conversation id
-  participants: [], // user Ids (trades person + user)
+  participants: [], // user IDs (tradesperson + user)
   lastMessageAt: // timestamp
   createdAt: // timestamp
 }
@@ -102,13 +157,20 @@ An Example Message:
   sender: // reference to user who sent
   text: "Hi Bob, are you available this Saturday?",
   createdAt: // timestamp
-  readAt: null // timestamp (maybe)
+  readAt: null // timestamp
 }
 ```
 
-## [First Draft Schema](src/db.mjs)
+## [Database Schema](server/db.mjs)
 
-The first draft of the mongoose schemas is linked above. These are subject to change.
+All Mongoose schemas are defined in `server/db.mjs`. Currently implemented models:
+
+-   User
+-   Profile
+-   ContactMessage
+-   Review (schema defined, not used)
+-   Conversation (schema defined, not used)
+-   Message (schema defined, not used)
 
 ## Wireframes
 
@@ -136,54 +198,101 @@ The first draft of the mongoose schemas is linked above. These are subject to ch
 
 ![SiteMap](documentation/sitemap.png)
 
-## User Stories or Use Cases
+## User Stories
 
--   As a visitor, I can search by skill and location to find relevant tradespeople.
--   As a visitor, I can view a tradesperson’s public profile to assess fit.
--   As a user, I can register and log in to access private features.
--   As a tradesperson, I can create and publish my profile to get discovered.
--   As a user, I can start a conversation with a tradesperson to discuss a job.
--   As a user, I can see my conversation history and exchange messages in real time.
--   As a user, I can leave a review for a completed job to help others.
+### Implemented
 
-## Research Topics
+-   ✅ As a visitor, I can view the landing page and navigate to registration/login
+-   ✅ As a user, I can register with email/password as either a customer or tradesperson
+-   ✅ As a user, I can log in and access protected features
+-   ✅ As a tradesperson, I can create and edit my profile with business details, skills, and credentials
+-   ✅ As a tradesperson, I can toggle my profile between draft and public visibility
+-   ✅ As a user, I can browse all published tradesperson profiles on the dashboard
+-   ✅ As a user, I can view tradesperson profile details in a modal
+-   ✅ As a user, I can send contact messages to tradespeople
+-   ✅ As a tradesperson, I can view all messages received from potential clients
+-   ✅ As a tradesperson, I can filter messages by all/unread status
+-   ✅ As a tradesperson, I can mark messages as read and delete messages
+-   ✅ As a tradesperson, I can see an unread message badge in the navigation
+-   ✅ As a user, I can upgrade my account to tradesperson status
+-   ✅ As a user, I can edit my profile when viewing my own tradesperson profile
 
-These are subject to change based on their complexity and time. I have listed the topics that I am currently most interested in and will adjust according to time and complexity.
+### Planned (Not Yet Implemented)
 
--   (4 points) Integrate user authentication
+-   ⏳ As a visitor, I can search and filter tradespeople by skill and location
+-   ⏳ As a user, I can start real-time conversations with tradespeople
+-   ⏳ As a user, I can see my conversation history and exchange messages
+-   ⏳ As a user, I can leave reviews and ratings for tradespeople
+-   ⏳ As a visitor, I can view aggregated ratings on profiles
 
-    -   Use passport.js for user authentication
-    -   Mid - Challenging
+## Research Topics & Technical Implementation
 
--   (2 points) Tailwind.css
+### Completed (11 points total)
 
-    -   Would like to explore how this might improve the workflow
-    -   Works well with React.js
-    -   Easy - Mid
+-   **(6 points) React Frontend**
 
--   (2 points) Integrate ESLint into your workflow
+    -   Built entire client-side application using React
+    -   Implemented with Vite as the build tool
+    -   Used React Router for client-side routing
+    -   Created reusable components (Navbar, ProfileCard, PrivateRoute)
+    -   Implemented React Context API for authentication state management
 
-    -   Use ESLint with Vite (via vite-plugin-eslint) to lint the entire codebase on save
-    -   Easy - Mid
+-   **(4 points) Firebase Authentication**
 
--   (6 points) Use a React framework for front-end
+    -   Integrated Firebase Authentication for user management
+    -   Implemented email/password registration and login
+    -   Used Firebase Admin SDK on backend for token verification
+    -   Created custom authentication middleware for protected routes
+    -   Quite complex as it required coordinating Firebase client/server SDKs, setting up many env vars, and configuration in the cloud.
 
-    -   Will allow for custom components and a modern frontend
-    -   Challenging
+-   **(1 points) Axios for request to API**
 
--   (4 points) Real-time chat with Socket.IO (maybe?)
+    -   Used Axios library instead of fetch for making background requests to the API from the front-end
+    -   Configured
 
-    -   Use socket.io for a real time chat feature
-    -   Mid – Challenging
+### Planned But Not Implemented
 
-## [Link to Initial Main Project File](src/app.mjs)
+-   **Real-time chat with Socket.IO**
+    -   Planned for future implementation
+    -   Would enable live messaging between users and tradespeople
 
-## Annotations / References Used
+## Main Project Files
 
-I will probably use these:
+-   [Server Entry Point](server/server.js)
+-   [Database Schema](server/db.mjs)
+-   [Client Entry Point](client/src/App.jsx)
+-   [Auth Context](client/src/contexts/AuthContext.jsx)
 
--   [passport.js authentication docs](http://passportjs.org/docs)
+## Technologies Used
 
--   [react docs](https://react.dev/reference/react)
+### Frontend
 
--   [tailwind docs](https://tailwindcss.com/docs/installation/using-vite)
+-   React
+-   React Router
+-   Vite
+-   Axios
+-   Firebase Client SDK
+
+### Backend
+
+-   Node.js
+-   Express
+-   MongoDB with Mongoose
+-   Firebase Admin SDK
+-   CORS, Cookie Parser
+
+### Development Tools
+
+-   Nodemon for auto-reload
+-   ESLint for code quality
+-   Git for version control
+
+## References & Documentation Used
+
+-   [Firebase Authentication Docs](https://firebase.google.com/docs/auth)
+-   [Firebase Admin SDK Docs](https://firebase.google.com/docs/admin/setup)
+-   [React Documentation](https://react.dev/reference/react)
+-   [React Router Documentation](https://reactrouter.com/)
+-   [Mongoose Documentation](https://mongoosejs.com/docs/)
+-   [Express Documentation](https://expressjs.com/)
+-   [Vite Documentation](https://vite.dev/)
